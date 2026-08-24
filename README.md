@@ -35,3 +35,25 @@ To analyze the behavioral differences between casual riders and annual members, 
 * Strict data-privacy issues prohibit the use of riders' personally identifiable information.
 * Due to these restrictions, it is not possible to connect pass purchases to credit card numbers.
 * Consequently, I cannot determine if casual riders live in the Cyclistic service area or if they have purchased multiple single passes.
+
+---
+
+## Phase 3: Process
+
+### Data Consolidation
+To prepare the data for analysis, I utilized Google BigQuery to aggregate 12 months of historical Cyclistic trip data. The initial raw data was structured across 12 separate CSV files. I explicitly defined the schema and used a `UNION ALL` SQL command to merge these files into a single master table containing exactly 6,037,968 records, ensuring column consistency and data type alignment.
+
+### Data Cleaning and Transformation
+To ensure data integrity and verify the dataset was clean and ready to analyze, I executed a comprehensive SQL cleaning script. This robust filtering process eliminated over 2 million invalid records. The following specific transformations were applied:
+
+* **Removed Null Values:** Filtered out records missing essential geographic data, specifically targeting NULLs in the `start_station_name` and `end_station_name` columns.
+* **Eliminated Anomalies:** Removed administrative and maintenance records by filtering out station names containing the words "Test" or "Base". 
+* **Corrected Temporal Errors:** Excluded physically impossible trips where the `ended_at` timestamp occurred before the `started_at` timestamp.
+* **Deduplication:** Applied advanced window functions (`QUALIFY ROW_NUMBER()`) to ensure absolute uniqueness across the `ride_id` primary key.
+
+### Metric Generation
+To facilitate the final analysis, I created two new required data points:
+1. **`ride_length_minutes`:** Calculated the exact duration of each trip using the `TIMESTAMP_DIFF()` function.
+2. **`day_of_week`:** Extracted the day the ride began using the `EXTRACT(DAYOFWEEK)` function, formatted as an integer where 1 represents Sunday.
+
+A final Quality Assurance (QA) query confirmed the resulting dataset contains 4,012,680 mathematically verified, flawless rows ready for the analysis phase.
