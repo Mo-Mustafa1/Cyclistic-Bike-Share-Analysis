@@ -21,39 +21,37 @@ To analyze historical bike trip data to identify behavioral differences between 
 
   ---
 
-  ## Phase 2: Prepare
+ ## Phase 2: Prepare
+### Data Source & Integrity
+The data used for this analysis covers the previous 12 months of Cyclistic trip data (August 2025 – July 2026). The data was downloaded and structured from monthly CSV files provided by Motivate International Inc. under this [license](https://www.divvybikes.com/data-license-agreement).
 
-### Data Sources
-To analyze the behavioral differences between casual riders and annual members, I utilized the previous 12 months of historical Cyclistic trip data. The datasets are appropriate for this case study and enable the answering of the core business questions.
+### ROCCC Analysis Evaluation
+* **Reliable:** High reliability; captures millions of real-world tracking metrics from actual system usage.
+* **Original:** First-party historical data provided directly by the city bike-share program.
+* **Comprehensive:** Contains 12 full months of data, capturing seasonal variations, ride durations, geographic coordinates, and user types.
+* **Current:** Reflects recent operational cycles up to mid-2026.
+* **Cited:** Sourced transparently from official public datasets.
 
-### Data Credibility & Licensing
-* **Source:** The data is public data provided by Motivate International Inc.
-* **Access:** It is available under a strict data license agreement.
-* **Context:** The datasets use a different name because Cyclistic is a fictional company, but the data is reliable and comprehensive for the scope of this project.
-
-### Privacy and Security Limitations
-* Strict data-privacy issues prohibit the use of riders' personally identifiable information.
-* Due to these restrictions, it is not possible to connect pass purchases to credit card numbers.
-* Consequently, I cannot determine if casual riders live in the Cyclistic service area or if they have purchased multiple single passes.
+### Privacy & Security
+Data privacy considerations prohibit the use of riders' personally identifiable information (PII). Credit card numbers and home addresses of users have been scrubbed to comply with data privacy regulations.
 
 ---
 
 ## Phase 3: Process
-
-### Data Consolidation
-To prepare the data for analysis, I utilized Google BigQuery to aggregate 12 months of historical Cyclistic trip data. The initial raw data was structured across 12 separate CSV files. I explicitly defined the schema and used a `UNION ALL` SQL command to merge these files into a single master table containing exactly 6,037,968 records, ensuring column consistency and data type alignment.
+### Environment & Consolidation
+* **Tool Used:** Google BigQuery Sandbox
+* **Data Ingestion:** Sourced 12 monthly CSV files via secure Google Drive URIs.
+* **Consolidation:** Explicitly defined schemas to prevent type mismatches and merged 12 separate tables into a single master table containing **6,037,968** records using `UNION ALL`.
 
 ### Data Cleaning and Transformation
-To ensure data integrity and verify the dataset was clean and ready to analyze, I executed a comprehensive SQL cleaning script. This robust filtering process eliminated over 2 million invalid records. The following specific transformations were applied:
-
-* **Removed Null Values:** Filtered out records missing essential geographic data, specifically targeting NULLs in the `start_station_name` and `end_station_name` columns.
-* **Eliminated Anomalies:** Removed administrative and maintenance records by filtering out station names containing the words "Test" or "Base". 
-* **Corrected Temporal Errors:** Excluded physically impossible trips where the `ended_at` timestamp occurred before the `started_at` timestamp.
-* **Deduplication:** Applied advanced window functions (`QUALIFY ROW_NUMBER()`) to ensure absolute uniqueness across the `ride_id` primary key.
+Executed a comprehensive SQL cleaning script that stripped out over 2 million invalid, incomplete, or test records:
+* **Removed Null Values:** Filtered out records missing essential geographic data (`start_station_name` and `end_station_name`).
+* **Eliminated Anomalies:** Removed maintenance and administrative test rows containing "Test" or "Base" in station names.
+* **Corrected Temporal Errors:** Excluded physically impossible trips where `ended_at` occurred before `started_at`.
+* **Deduplication:** Applied window functions (`QUALIFY ROW_NUMBER()`) to enforce uniqueness across `ride_id`.
 
 ### Metric Generation
-To facilitate the final analysis, I created two new required data points:
-1. **`ride_length_minutes`:** Calculated the exact duration of each trip using the `TIMESTAMP_DIFF()` function.
-2. **`day_of_week`:** Extracted the day the ride began using the `EXTRACT(DAYOFWEEK)` function, formatted as an integer where 1 represents Sunday.
+* **`ride_length_minutes`:** Calculated trip duration using `TIMESTAMP_DIFF(ended_at, started_at, MINUTE)`.
+* **`day_of_week`:** Extracted the starting day of the week via `EXTRACT(DAYOFWEEK)` (1 = Sunday).
 
-A final Quality Assurance (QA) query confirmed the resulting dataset contains 4,012,680 mathematically verified, flawless rows ready for the analysis phase.
+A final Quality Assurance query confirmed a clean, mathematically verified dataset of **4,012,680** rows ready for analysis.
