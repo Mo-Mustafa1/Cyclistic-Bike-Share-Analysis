@@ -67,3 +67,37 @@ I utilized Google BigQuery to aggregate the data and extract behavioral trends. 
 * **Volume vs. Duration:** Annual members form the core user base, accounting for 65.1% of all trips (2,612,571 rides). However, casual riders spend significantly more time on the bikes per trip, averaging 20.59 minutes compared to the members' 11.89 minutes.
 * **Weekly Usage Shift:** Annual member usage remains high during standard weekdays (peaking Tuesday through Thursday at over 400,000 rides), strongly indicating commuter behavior. Conversely, casual rider volume peaks sharply on weekends (Saturday and Sunday), indicating leisure or tourism usage.
 * **Seasonal Demand:** Both groups demonstrate peak usage during the summer months (specifically June, July, and August), with member volume topping 337,000 rides in July and casual volume reaching 227,000 rides in the same month.
+
+  ---
+
+  ## Phase 5: Share
+
+### Data Visualizations & Behavioral Insights
+
+#### 1. User Base Distribution
+Annual members account for **65.1%** of all completed trips (2,612,571 rides), establishing that subscriber usage represents the primary operational volume of the Cyclistic network.
+
+![Total Rides Distribution](chart1_user_distribution.png)
+
+#### 2. Weekly Commuter vs. Weekend Leisure Trends
+Member ride volume remains high and steady Monday through Friday (peaking mid-week between Tuesday and Thursday), confirming consistent commuter utility. Casual ridership spikes sharply on Saturday and Sunday.
+
+![Weekly Ride Volume by User Type](chart2_weekly_trends.png)
+
+#### 3. Monthly Seasonality (12-Month Trend)
+Both segments experience their highest demand during the summer months (June through August), with July recording the annual peak. Casual ridership exhibits a steeper drop during the winter months compared to annual members.
+
+![Monthly Ride Seasonality](chart3_monthly_seasonality.png)
+
+---
+
+## Phase 6: Act
+
+### Key Business Takeaways
+* **Commuter Foundation:** Annual members rely on Cyclistic for routine, short-duration weekday travel (averaging ~11.9 minutes per trip).
+* **High Leisure Engagement:** Casual riders use the service primarily on weekends and during warm seasons, logging significantly longer trips (averaging ~20.6 minutes per trip).
+
+### Strategic Recommendations
+1. **Targeted Seasonal Conversions:** Launch digital campaigns and station-specific promotions between May and August targeting high-traffic recreational routes to convert summer casual riders into annual members.
+2. **Weekend-to-Weekday Commuter Trial:** Introduce a limited-time promotional pass offering weekend casual users discounted weekday rides to encourage everyday commute adoption.
+3. **Trip-Duration Milestone Rewards:** Provide subscription discounts or ride credits to casual riders who frequently log rides exceeding 15 minutes, illustrating the cost efficiency of an annual membership.
