@@ -50,8 +50,20 @@ Executed a comprehensive SQL cleaning script that stripped out over 2 million in
 * **Corrected Temporal Errors:** Excluded physically impossible trips where `ended_at` occurred before `started_at`.
 * **Deduplication:** Applied window functions (`QUALIFY ROW_NUMBER()`) to enforce uniqueness across `ride_id`.
 
-### Metric Generation
-* **`ride_length_minutes`:** Calculated trip duration using `TIMESTAMP_DIFF(ended_at, started_at, MINUTE)`.
-* **`day_of_week`:** Extracted the starting day of the week via `EXTRACT(DAYOFWEEK)` (1 = Sunday).
+  ---
 
-A final Quality Assurance query confirmed a clean, mathematically verified dataset of **4,012,680** rows ready for analysis.
+ ## Phase 4: Analyze
+
+### Analytical Objective
+The goal of this phase is to uncover actionable insights regarding the differing usage patterns between annual members and casual riders, utilizing the cleaned dataset of 4,012,680 records.
+
+### SQL Aggregation & Trend Discovery
+I utilized Google BigQuery to aggregate the data and extract behavioral trends. The analysis focused on three primary areas:
+* **Overall Metrics:** Calculated total ride volume and average ride lengths grouped by user type.
+* **Weekly Patterns:** Analyzed ride frequencies and durations across the days of the week to identify commuter versus leisure trends.
+* **Seasonality:** Extracted monthly trip volumes to track demand fluctuations throughout the year.
+
+### Key Findings
+* **Volume vs. Duration:** Annual members form the core user base, accounting for 65.1% of all trips (2,612,571 rides). However, casual riders spend significantly more time on the bikes per trip, averaging 20.59 minutes compared to the members' 11.89 minutes.
+* **Weekly Usage Shift:** Annual member usage remains high during standard weekdays (peaking Tuesday through Thursday at over 400,000 rides), strongly indicating commuter behavior. Conversely, casual rider volume peaks sharply on weekends (Saturday and Sunday), indicating leisure or tourism usage.
+* **Seasonal Demand:** Both groups demonstrate peak usage during the summer months (specifically June, July, and August), with member volume topping 337,000 rides in July and casual volume reaching 227,000 rides in the same month.
